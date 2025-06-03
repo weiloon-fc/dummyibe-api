@@ -5,17 +5,13 @@ using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Operators;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Security;
-using Org.BouncyCastle.X509;
 using System.Security.Cryptography;
-using Org.BouncyCastle.Asn1;
 using System.Security.Cryptography.X509Certificates;
 using Jose;
 using Newtonsoft.Json;
 using System.Collections;
-using Microsoft.AspNetCore.ResponseCompression;
 using System.Text;
 using DummyIBE_API.Models;
-using Org.BouncyCastle.Asn1.Ocsp;
 using Newtonsoft.Json.Linq;
 
 namespace DummyIBE_API.Controllers
@@ -113,7 +109,7 @@ namespace DummyIBE_API.Controllers
 
             X509Certificate2 rsaPrivateCert = X509Certificate2.CreateFromPem(ibeCert, ibePrivateKey);
 
-            string jweRequest = Jose.JWT.Encode(payload, rsaCert, Jose.JweAlgorithm.RSA_OAEP, Jose.JweEncryption.A256GCM, null, null, new Jose.JwtSettings { JsonMapper = new NewtonsoftMapper() });
+            string jweRequest = Jose.JWT.Encode(payload, rsaCert, Jose.JweAlgorithm.RSA_OAEP_256, Jose.JweEncryption.A256GCM, null, null, new Jose.JwtSettings { JsonMapper = new NewtonsoftMapper() });
             string token = Jose.JWT.Encode(jweRequest, rsaPrivateCert.GetRSAPrivateKey(), Jose.JwsAlgorithm.PS256);
 
             return Content(token ?? "Failed to get token");
@@ -137,7 +133,7 @@ namespace DummyIBE_API.Controllers
 
             X509Certificate2 rsaPrivateCert = X509Certificate2.CreateFromPem(ibeCert, ibePrivateKey);
             string jweResponse = Jose.JWT.Decode(token, rsaCert, Jose.JwsAlgorithm.PS256);
-            string strResponse = Jose.JWT.Decode(jweResponse, rsaPrivateCert.GetRSAPrivateKey(), Jose.JweAlgorithm.RSA_OAEP, Jose.JweEncryption.A256GCM);
+            string strResponse = Jose.JWT.Decode(jweResponse, rsaPrivateCert.GetRSAPrivateKey(), Jose.JweAlgorithm.RSA_OAEP_256, Jose.JweEncryption.A256GCM);
 
             var payload = JsonConvert.DeserializeObject<SelectedSeatPayload>(strResponse);
 

@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "DummyIBE_API": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:56080;http://localhost:56081"
+    }
+  }
+}

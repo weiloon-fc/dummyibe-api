@@ -268,7 +268,12 @@
                                             {
                                                 var paxSeat = seat.Passengers[idxPax];
                                                 var pax = Model.Passengers.First(x => x.Id == paxSeat.Id);
-                                                <text>@pax.FirstName @pax.LastName <strong>(@paxSeat.SeatNumber)</strong></text><br />
+                                                string seatFee = "";
+                                                if(paxSeat.Fee > 0)
+                                                {
+                                                    seatFee = $"{paxSeat.FeeCurrency} {paxSeat.Fee.ToString("#,##0.00")}";
+                                                }
+                                                <text>@pax.FirstName @pax.LastName <strong>(@paxSeat.SeatNumber)</strong> @seatFee</text><br />
                                             }
                                         }                                   
                                     </td>
